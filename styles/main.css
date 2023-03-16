@@ -1,0 +1,191 @@
+:root {
+    --background: url("/backgrounds/light.png");
+    --color: rgb(15, 15, 15);
+    --thin-color: rgb(63, 63, 63);
+    --item-background: rgba(255, 255, 255, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --light-color: rgba(255, 255, 255, 0.5);
+    --time-border-color: rgba(63, 63, 63, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: url("/backgrounds/dark.png");
+        --color: rgb(240, 240, 240);
+        --thin-color: rgb(192, 192, 192);
+        --item-background: rgba(15, 15, 15, 0.5);
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --light-color: rgba(255, 255, 255, 0.125);
+        --time-border-color: rgba(192, 192, 192, 0.25);
+    }
+}
+
+:root {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--background);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--color);
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+nav {
+    background: var(--item-background);
+    box-shadow: 0 0 0.2em var(--shadow-color);
+    width: 100%;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    margin: 1em;
+    padding: 0;
+}
+
+nav ul li button {
+    background: var(--item-background);
+    border: none;
+    color: var(--color);
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    width: 4em;
+    height: 4em;
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+nav ul li button:hover {
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+nav ul li button:active {
+    box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
+nav ul li:nth-child(2) button {
+    width: 5em;
+    height: 5em;
+}
+
+nav ul li button::before {
+    font-family: "Material Symbols Rounded";
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+nav ul li:nth-child(2) button::before {
+    content: "mic";
+    font-size: 3em;
+}
+
+nav ul li:nth-child(1) button::before {
+    content: "keyboard";
+}
+
+nav ul li:nth-child(3) button::before {
+    content: "settings";
+}
+
+.message {
+    background: var(--item-background);
+    box-shadow: 0 0 0.2em var(--shadow-color);
+    border-radius: 0.5em;
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 80%;
+    text-align: center;
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+.message:hover {
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+.message.user {
+    border-radius: 0.5em 0.5em 0 0.5em;
+    text-align: right;
+}
+
+.message.kana {
+    border-radius: 0.5em 0.5em 0.5em 0;
+    text-align: left;
+}
+
+.time {
+    color: var(--thin-color);
+    font-size: calc(2em / 3);
+    border-top: 1px solid var(--time-border-color);
+    margin: 1em;
+    padding: 0.5em;
+    width: 80%;
+    text-align: center;
+}
+
+.time.user {
+    border: none;
+    position: relative;
+    top: -0.5em;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.time.kana {
+    border: none;
+    position: relative;
+    top: -0.5em;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
