@@ -28,6 +28,10 @@
     box-sizing: border-box;
 }
 
+*:focus {
+    outline: 2px solid var(--focus-color);
+}
+
 html {
     font-family: 'Noto Sans JP', sans-serif;
     height: 100%;
@@ -54,13 +58,13 @@ a {
     text-decoration: none;
 }
 
+h1,h2,h3,h4,h5,h6 {
+    color: var(--color);
+}
+
 p {
     margin: 0;
     padding: 0;
-}
-
-*:focus {
-    outline: 2px dotted var(--focus-color);
 }
 
 main {
@@ -116,10 +120,12 @@ nav ul li button {
 }
 
 nav ul li button:hover {
+    outline: none;
     box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
 }
 
 nav ul li button:active {
+    outline: none;
     box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
 }
 
@@ -163,6 +169,7 @@ nav ul li:nth-child(3) button::before {
 }
 
 .message:hover {
+    outline: none;
     box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
 }
 
@@ -265,7 +272,7 @@ dialog#login form label {
     text-align: left;
 }
 
-dialog#login form input[type=submit] {
+dialog#login form button[type=submit] {
     background: var(--item-background);
     border: none;
     color: var(--color);
@@ -281,12 +288,12 @@ dialog#login form input[type=submit] {
     transition: box-shadow 0.125s ease-in-out;
 }
 
-dialog#login form input[type=submit]:hover {
+dialog#login form button[type=submit]:hover {
     outline: none;
     box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
 }
 
-dialog#login form input[type=submit]:active {
+dialog#login form button[type=submit]:active {
     outline: none;
     box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
 }
@@ -297,4 +304,17 @@ dialog#login p {
     padding: 0;
     width: 100%;
     text-align: center;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate {
+    animation: rotate 0.5s ease-in-out infinite;
 }

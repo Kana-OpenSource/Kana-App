@@ -14,8 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
-    <script src="./script/moment-with-locales.min.js"></script>
-    <script src="./script/main.js"></script>
+    <script src="./scripts/moment-with-locales.min.js"></script>
+    <script src="./scripts/main.js"></script>
 </head>
 
 <body>
@@ -76,13 +76,18 @@
         </nav>
     </main>
     <dialog id="login">
-        <h3>Kanaアカウントでログイン</h3>
+        <h3>ログイン</h3>
+        <p id="login_message">
+            Kana Accountでログイン
+        </p>
         <form method="dialog">
             <label for="login_id">ログインID</label>
             <input type="text" id="login_id" name="login_id" autocomplete="username" required>
             <label for="login_password">パスワード</label>
             <input type="password" id="login_password" name="login_password" autocomplete="current-password" required>
-            <input type="submit" id="login_button" name="login_button" value="ログイン">
+            <button type="submit" id="login_button" name="login_button">
+                ログイン
+            </button>
         </form>
         <p>
             アカウントをお持ちでない方は<a href="https://kana.renorari.net/api/account/create.html" target="_blank">こちら</a>
