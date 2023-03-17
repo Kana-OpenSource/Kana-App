@@ -1,11 +1,13 @@
 :root {
     --background: url("/backgrounds/light.png");
     --color: rgb(15, 15, 15);
-    --thin-color: rgb(63, 63, 63);
+    --thin-color: rgb(95, 95, 95);
+    --link-color: rgb(63, 127, 255);
     --item-background: rgba(255, 255, 255, 0.5);
     --shadow-color: rgba(0, 0, 0, 0.25);
     --light-color: rgba(255, 255, 255, 0.5);
     --time-border-color: rgba(63, 63, 63, 0.25);
+    --focus-color: rgba(63, 127, 255, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,18 +15,21 @@
         --background: url("/backgrounds/dark.png");
         --color: rgb(240, 240, 240);
         --thin-color: rgb(192, 192, 192);
+        --link-color: rgb(63, 127, 255);
         --item-background: rgba(15, 15, 15, 0.5);
         --shadow-color: rgba(0, 0, 0, 0.5);
         --light-color: rgba(255, 255, 255, 0.125);
         --time-border-color: rgba(192, 192, 192, 0.25);
+        --focus-color: rgba(63, 127, 255, 0.5);
     }
 }
 
-:root {
+* {
     box-sizing: border-box;
 }
 
 html {
+    font-family: 'Noto Sans JP', sans-serif;
     height: 100%;
     width: 100%;
     margin: 0;
@@ -44,9 +49,18 @@ body {
     overflow: hidden;
 }
 
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
 p {
     margin: 0;
     padding: 0;
+}
+
+*:focus {
+    outline: 2px dotted var(--focus-color);
 }
 
 main {
@@ -141,7 +155,7 @@ nav ul li:nth-child(3) button::before {
     background: var(--item-background);
     box-shadow: 0 0 0.2em var(--shadow-color);
     border-radius: 0.5em;
-    margin: 0.5em;
+    margin: 0.25em;
     padding: 0.5em;
     width: 80%;
     text-align: center;
@@ -162,6 +176,19 @@ nav ul li:nth-child(3) button::before {
     text-align: left;
 }
 
+.message input[type=text] {
+    background: none;
+    border: none;
+    color: var(--color);
+    font-size: 1em;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    text-align: right;
+}
+
 .time {
     color: var(--thin-color);
     font-size: calc(2em / 3);
@@ -175,7 +202,7 @@ nav ul li:nth-child(3) button::before {
 .time.user {
     border: none;
     position: relative;
-    top: -0.5em;
+    top: -0.25em;
     margin: 0;
     padding: 0;
     text-align: left;
@@ -184,8 +211,90 @@ nav ul li:nth-child(3) button::before {
 .time.kana {
     border: none;
     position: relative;
-    top: -0.5em;
+    top: -0.25em;
     margin: 0;
     padding: 0;
+    text-align: right;
+}
+
+dialog#login {
+    background: var(--item-background);
+    backdrop-filter: blur(1em);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+dialog#login form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    width: 60%;
+}
+
+dialog#login form input[type=text], dialog#login form input[type=password] {
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--thin-color);
+    color: var(--color);
+    font-size: 1em;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+dialog#login form label {
+    color: var(--thin-color);
+    font-size: calc(2em / 3);
+    margin: 0.5em;
+    padding: 0;
+    width: 100%;
     text-align: left;
+}
+
+dialog#login form input[type=submit] {
+    background: var(--item-background);
+    border: none;
+    color: var(--color);
+    border-radius: 100vh;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 1em;
+    padding: 0.25em;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+dialog#login form input[type=submit]:hover {
+    outline: none;
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+dialog#login form input[type=submit]:active {
+    outline: none;
+    box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
+dialog#login p {
+    color: var(--thin-color);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
 }

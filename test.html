@@ -7,9 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kana</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
+    <script src="./script/moment-with-locales.min.js"></script>
+    <script src="./script/main.js"></script>
 </head>
 
 <body>
@@ -21,7 +27,7 @@
                 </div>
             </div>
             <div class="time user">
-                <p>2000/10/10 10:10</p>
+                <p>2023/3/10 10:10</p>
             </div>
             <div class="message kana">
                 <div class="message_text">
@@ -29,7 +35,7 @@
                 </div>
             </div>
             <div class="time kana">
-                <p>2000/10/10 10:11</p>
+                <p>2023/3/10 10:11</p>
             </div>
             <div class="message user">
                 <div class="message_text">
@@ -42,14 +48,22 @@
                 </div>
             </div>
             <div class="time kana">
-                <p>2000/10/10 10:13</p>
+                <p>2023/3/10 10:13</p>
             </div>
             <div class="time">
-                <p>2000/10/12</p>
+                <p>2023/3/12 9:21</p>
             </div>
             <div class="message">
                 <div class="message_text">
                     <p>システムメッセージ</p>
+                </div>
+            </div>
+            <div class="time">
+                <p>2023/3/16 23:47</p>
+            </div>
+            <div class="message user">
+                <div class="message_text">
+                    <input type="text">
                 </div>
             </div>
         </div>
@@ -61,6 +75,19 @@
             </ul>
         </nav>
     </main>
+    <dialog id="login">
+        <h3>Kanaアカウントでログイン</h3>
+        <form method="dialog">
+            <label for="login_id">ログインID</label>
+            <input type="text" id="login_id" name="login_id" autocomplete="username" required>
+            <label for="login_password">パスワード</label>
+            <input type="password" id="login_password" name="login_password" autocomplete="current-password" required>
+            <input type="submit" id="login_button" name="login_button" value="ログイン">
+        </form>
+        <p>
+            アカウントをお持ちでない方は<a href="https://kana.renorari.net/api/account/create.html" target="_blank">こちら</a>
+        </p>
+    </dialog>
 </body>
 
 </html>
