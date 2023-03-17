@@ -1,5 +1,5 @@
 :root {
-    --background: url("/backgrounds/light.png");
+    --background: url("../backgrounds/light.png");
     --color: rgb(15, 15, 15);
     --thin-color: rgb(95, 95, 95);
     --link-color: rgb(63, 127, 255);
@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: url("/backgrounds/dark.png");
+        --background: url("../backgrounds/dark.png");
         --color: rgb(240, 240, 240);
         --thin-color: rgb(192, 192, 192);
         --link-color: rgb(63, 127, 255);
@@ -227,6 +227,7 @@ nav ul li:nth-child(3) button::before {
 dialog#login {
     background: var(--item-background);
     backdrop-filter: blur(1em);
+    -webkit-backdrop-filter: blur(1em);
     border: none;
     display: flex;
     flex-direction: column;
@@ -317,4 +318,17 @@ dialog#login p {
 
 .rotate {
     animation: rotate 0.5s ease-in-out infinite;
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeout {
+    animation: fadeout 0.5s ease-in-out;
 }
