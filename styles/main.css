@@ -26,6 +26,7 @@
 
 * {
     box-sizing: border-box;
+    user-select: none;
 }
 
 *:focus {
@@ -65,6 +66,10 @@ h1,h2,h3,h4,h5,h6 {
 p {
     margin: 0;
     padding: 0;
+}
+
+input {
+    user-select: unset;
 }
 
 main {
@@ -166,6 +171,7 @@ nav ul li:nth-child(3) button::before {
     width: 80%;
     text-align: center;
     transition: box-shadow 0.125s ease-in-out;
+    overflow-wrap: break-word;
 }
 
 .message:hover {
@@ -233,6 +239,8 @@ dialog#login {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
     position: absolute;
     top: 0;
     left: 0;
@@ -307,6 +315,192 @@ dialog#login p {
     text-align: center;
 }
 
+dialog#settings {
+    background: var(--item-background);
+    backdrop-filter: blur(1em);
+    -webkit-backdrop-filter: blur(1em);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+dialog#settings header button {
+    background: var(--item-background);
+    border: none;
+    color: var(--color);
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    width: 4em;
+    height: 4em;
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+dialog#settings header button:hover {
+    outline: none;
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+dialog#settings header button:active {
+    outline: none;
+    box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
+dialog#settings header {
+    background: var(--item-background);
+    color: var(--thin-color);
+    font-size: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 0.2em var(--shadow-color);
+}
+
+dialog#settings header button {
+    margin: 1em;
+    width: 3em;
+    height: 3em;
+}
+
+dialog#settings header button::before {
+    font-family: "Material Symbols Rounded";
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+dialog#settings header button::before {
+    content: "arrow_back_ios_new";
+}
+
+dialog#settings header h3 {
+    display: inline-block;
+    width: 100%;
+}
+
+dialog#settings > div {
+    width: 80%;
+}
+
+dialog#settings #user_info {
+    background: var(--item-background);
+    border-radius: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+    padding: 1em;
+    width: 100%;
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+dialog#settings #user_info:hover {
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+dialog#settings #user_info #user_name {
+    color: var(--color);
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+dialog#settings #user_info #user_id {
+    color: var(--thin-color);
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+dialog#settings #user_info #logout {
+    background: var(--item-background);
+    border: none;
+    color: var(--color);
+    border-radius: 100vh;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 0;
+    margin-top: 1em;
+    padding: 0.25em;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+dialog#settings #user_info #logout:hover {
+    outline: none;
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+dialog#settings #user_info #logout:active {
+    outline: none;
+    box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
+dialog#settings label {
+    color: var(--thin-color);
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+dialog#settings select {
+    background: var(--item-background);
+    border: none;
+    color: var(--color);
+    border-radius: 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 0;
+    padding: 0.25em;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    transition: box-shadow 0.125s ease-in-out;
+}
+
+dialog#settings select:hover {
+    outline: none;
+    box-shadow: 0 0.05em 0.2em var(--shadow-color), 0 0.05em 0.1em var(--light-color) inset;
+}
+
+dialog#settings select:active {
+    outline: none;
+    box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
 @keyframes rotate {
     from {
         transform: rotate(0deg);
@@ -318,6 +512,19 @@ dialog#login p {
 
 .rotate {
     animation: rotate 0.5s ease-in-out infinite;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fadein {
+    animation: fadein 0.5s ease-in-out;
 }
 
 @keyframes fadeout {

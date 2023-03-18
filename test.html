@@ -20,58 +20,12 @@
 
 <body>
     <main>
-        <div id="chat">
-            <div class="message user">
-                <div class="message_text">
-                    <p>ユーザーメッセージ</p>
-                </div>
-            </div>
-            <div class="time user">
-                <p>2023/3/10 10:10</p>
-            </div>
-            <div class="message kana">
-                <div class="message_text">
-                    <p>Kanaメッセージ</p>
-                </div>
-            </div>
-            <div class="time kana">
-                <p>2023/3/10 10:11</p>
-            </div>
-            <div class="message user">
-                <div class="message_text">
-                    <p>ユーザーメッセージ</p>
-                </div>
-            </div>
-            <div class="message kana">
-                <div class="message_text">
-                    <p>Kanaメッセージ</p>
-                </div>
-            </div>
-            <div class="time kana">
-                <p>2023/3/10 10:13</p>
-            </div>
-            <div class="time">
-                <p>2023/3/12 9:21</p>
-            </div>
-            <div class="message">
-                <div class="message_text">
-                    <p>システムメッセージ</p>
-                </div>
-            </div>
-            <div class="time">
-                <p>2023/3/16 23:47</p>
-            </div>
-            <div class="message user">
-                <div class="message_text">
-                    <input type="text">
-                </div>
-            </div>
-        </div>
+        <div id="chat"></div>
         <nav>
             <ul>
-                <li><button></button></li>
-                <li><button></button></li>
-                <li><button></button></li>
+                <li><button id="keyboard_button"></button></li>
+                <li><button id="listen_button"></button></li>
+                <li><button id="settings_button"></button></li>
             </ul>
         </nav>
     </main>
@@ -79,7 +33,7 @@
         <h3>ログイン</h3>
         <p id="login_message">
             Kana Accountでログイン
-        </p>
+
         <form method="dialog">
             <label for="login_id">ログインID</label>
             <input type="text" id="login_id" name="login_id" autocomplete="username" required>
@@ -92,6 +46,30 @@
         <p>
             アカウントをお持ちでない方は<a href="https://kana.renorari.net/api/account/create.html" target="_blank">こちら</a>
         </p>
+    </dialog>
+    <dialog id="settings" style="display: none;">
+        <header>
+            <button id="settings_close"></button>
+            <h3>設定</h3>
+        </header>
+        <div>
+            <h4>アカウント</h4>
+            <div id="user_info">
+                <span id="user_name"></span>
+                <span id="user_id"></span>
+                <button id="logout">ログアウト</button>
+            </div>
+            <h4>音声</h4>
+            <div>
+                <input type="checkbox" id="sound" name="sound" checked>
+                <label for="sound">通知音</label>
+            </div>
+            <div>
+                <input type="checkbox" id="voice" name="voice" checked>
+                <label for="voice">音声</label>
+                <select id="voice_list"></select>
+            </div>
+        </div>
     </dialog>
 </body>
 
