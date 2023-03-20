@@ -14,6 +14,7 @@ const sounds = [
 ];
 const alarms = [
     () => document.querySelector("#sound").checked && new Audio("./alarms/beep.mp3").play(),
+    () => document.querySelector("#sound").checked && new Audio("./alarms/iron.mp3").play()
 ];
 
 function saveChatLog() {
@@ -60,7 +61,6 @@ function speech(text) {
 }
 
 function sendMessage() {
-    sounds[1]();
     fetch("https://kana.renorari.net/api/v2/chat", {
         "method": "POST",
         "headers": {
@@ -124,6 +124,10 @@ function updateVoiceList() {
     });
 }
 
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = "ja-JP";
+recognition.interimResults = true;
 document.addEventListener("DOMContentLoaded", () => {
     //moment().locale("ja").fromNow();
     localStorage.getItem("userinfo") && login(JSON.parse(localStorage.getItem("userinfo")).id, JSON.parse(localStorage.getItem("userinfo")).password, true);
@@ -217,6 +221,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.querySelector("#logout").addEventListener("click", () => {
         localStorage.removeItem("userinfo");
+        localStorage.removeItem("chat_log");
+        localStorage.removeItem("sound");
+        localStorage.removeItem("voice");
+        localStorage.removeItem("voice_list");
         document.querySelector("#login").style.display = "";
         document.querySelector("#login").classList.add("fadein");
         document.querySelector("#settings").classList.add("fadeout");
@@ -243,6 +251,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector("#listen_button").addEventListener("click", () => {
+        if (document.querySelector("#chat > .message.user > input")) document.querySelector("#chat > .message.user:last-child").remove();
+        if (document.querySelector("#chat > .message.user.rec")) return recognition.stop();
+        const recMessageElement = document.createElement("div");
+        recMessageElement.classList.add("message");
+        recMessageElement.classList.add("user");
+        recMessageElement.classList.add("rec");
+        recMessageElement.innerHTML = "<span class=\"shadowExpandX-dot\"></span>";
+        document.querySelector("#chat").appendChild(recMessageElement);
+        document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
+        function onStartRecognition() {
+            recMessageElement.innerHTML = "<span class=\"flash-dot\"></span>";
+            sounds[0]();
+        }
+        function onResultRecognition(event) {
+            console.log(event)
+            if (event.results.length == 0) return;
+            const result = event.results[event.results.length - 1];
+            if (result.isFinal) {
+                recMessageElement.remove();
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message");
+                messageElement.classList.add("user");
+                messageElement.innerHTML = result[0].transcript;
+                document.querySelector("#chat").appendChild(messageElement);
+                document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
+                saveChatLog();
+                sounds[1]();
+                sendMessage();
+                recognition.removeEventListener("start", onStartRecognition);
+                recognition.removeEventListener("result", onResultRecognition);
+            } else {
+                recMessageElement.innerHTML = `${result[0].transcript}<span class="flash-dot"></span>`;
+            }
+        }
+        function onEndRecognition() {
+            recMessageElement.remove();
+            recognition.removeEventListener("start", onStartRecognition);
+            recognition.removeEventListener("result", onResultRecognition);
+            recognition.removeEventListener("end", onEndRecognition);
+        }
+        recognition.addEventListener("start", onStartRecognition);
+        recognition.addEventListener("result", onResultRecognition);
+        recognition.addEventListener("end", onEndRecognition);
+        recognition.start();
     });
 
     document.querySelector("#keyboard_button").addEventListener("click", () => {
@@ -269,4 +321,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     updateVoiceList();
+    if ('SpeechRecognition' in window) {
+    } else {
+        document.querySelector("#listen_button").disabled = true;
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message");
+        messageElement.innerHTML = "音声認識がサポートされていません";
+        document.querySelector("#chat").appendChild(messageElement);
+    }
 });

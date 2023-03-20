@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open test.html",
-            "file": "/Users/renorari/Documents/GitHub/Kana-Sources/Kana-App/test.html",
+            "file": "/Users/renorari/Documents/GitHub/Kana-Sources/Kana-App/index.html",
             "runtimeArgs": [
                 "--disable-web-security"
             ]

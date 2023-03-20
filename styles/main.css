@@ -59,7 +59,12 @@ a {
     text-decoration: none;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--color);
 }
 
@@ -132,6 +137,12 @@ nav ul li button:hover {
 nav ul li button:active {
     outline: none;
     box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
+}
+
+nav ul li button:disabled {
+    cursor: not-allowed;
+    box-shadow: 0 0 0.1em var(--shadow-color);
+    opacity: 0.5;
 }
 
 nav ul li:nth-child(2) button {
@@ -258,7 +269,8 @@ dialog#login form {
     width: 60%;
 }
 
-dialog#login form input[type=text], dialog#login form input[type=password] {
+dialog#login form input[type=text],
+dialog#login form input[type=password] {
     background: none;
     border: none;
     border-bottom: 1px solid var(--thin-color);
@@ -322,7 +334,7 @@ dialog#settings {
     border: none;
     display: flex;
     flex-direction: column;
-    justify-content:flex-start;
+    justify-content: flex-start;
     align-items: center;
     margin: 0;
     padding: 0;
@@ -402,7 +414,7 @@ dialog#settings header h3 {
     width: 100%;
 }
 
-dialog#settings > div {
+dialog#settings>div {
     width: 80%;
 }
 
@@ -501,41 +513,97 @@ dialog#settings select:active {
     box-shadow: 0 0.05em 0.1em var(--shadow-color), 0 0.05em 0.1em var(--shadow-color) inset;
 }
 
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .rotate {
     animation: rotate 0.5s ease-in-out infinite;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .fadein {
     animation: fadein 0.5s ease-in-out;
 }
 
+.fadeout {
+    animation: fadeout 0.5s ease-in-out;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 @keyframes fadeout {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
 }
 
-.fadeout {
-    animation: fadeout 0.5s ease-in-out;
+
+.flash-dot {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    margin: 0 1em;
+    background-color: var(--color);
+    box-shadow: 0.75em 0 var(--color), -0.75em 0 var(--color);
+    position: relative;
+    animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+    0% {
+        background-color: var(--thin-color);
+        box-shadow: 0.75em 0 var(--thin-color), -0.75em 0 var(--color);
+    }
+
+    50% {
+        background-color: var(--color);
+        box-shadow: 0.75em 0 var(--thin-color), -0.75em 0 var(--thin-color);
+    }
+
+    100% {
+        background-color: var(--thin-color);
+        box-shadow: 0.75em 0 var(--color), -0.75em 0 var(--thin-color);
+    }
+}
+
+.shadowExpandX-dot {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    margin: 0 1em;
+    position: relative;
+    background: var(--color);
+    animation: shadowExpandX 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes shadowExpandX {
+    0% {
+        box-shadow: 0 0, 0 0;
+        color: var(--thin-color);
+    }
+
+    100% {
+        box-shadow: 0.75em 0, -0.75em 0;
+        color: var(--color);
+    }
 }
