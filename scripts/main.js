@@ -10,7 +10,8 @@ const sanitaize = {
 
 const sounds = [
     () => document.querySelector("#sound").checked && new Audio("./sounds/0.mp3").play(),
-    () => document.querySelector("#sound").checked && new Audio("./sounds/1.mp3").play()
+    () => document.querySelector("#sound").checked && new Audio("./sounds/1.mp3").play(),
+    () => document.querySelector("#sound").checked && new Audio("./sounds/2.mp3").play(),
 ];
 const alarms = [
     () => document.querySelector("#sound").checked && new Audio("./alarms/beep.mp3").play(),
@@ -252,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector("#listen_button").addEventListener("click", () => {
         if (document.querySelector("#chat > .message.user > input")) document.querySelector("#chat > .message.user:last-child").remove();
-        if (document.querySelector("#chat > .message.user.rec")) return recognition.stop();
+        if (document.querySelector("#chat > .message.user.rec")) return recognition.stop() || sounds[2]();
         const recMessageElement = document.createElement("div");
         recMessageElement.classList.add("message");
         recMessageElement.classList.add("user");
