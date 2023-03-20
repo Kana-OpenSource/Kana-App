@@ -271,6 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (event.results.length == 0) return;
             const result = event.results[event.results.length - 1];
             if (result.isFinal) {
+                SpeechRecognition.stop();
                 recMessageElement.remove();
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message");
