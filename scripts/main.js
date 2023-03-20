@@ -129,6 +129,7 @@ var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = "ja-JP";
 recognition.interimResults = true;
+recognition.continuous = true;
 document.addEventListener("DOMContentLoaded", () => {
     //moment().locale("ja").fromNow();
     localStorage.getItem("userinfo") && login(JSON.parse(localStorage.getItem("userinfo")).id, JSON.parse(localStorage.getItem("userinfo")).password, true);
