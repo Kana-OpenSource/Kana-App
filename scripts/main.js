@@ -267,11 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
             sounds[0]();
         }
         function onResultRecognition(event) {
-            console.log(event)
             if (event.results.length == 0) return;
             const result = event.results[event.results.length - 1];
             if (result.isFinal) {
-                SpeechRecognition.stop();
+                recognition.stop();
                 recMessageElement.remove();
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message");
