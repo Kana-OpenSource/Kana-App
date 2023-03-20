@@ -73,7 +73,7 @@ function sendMessage() {
                 "id": JSON.parse(localStorage.getItem("userinfo")).id,
                 "password": JSON.parse(localStorage.getItem("userinfo")).password
             },
-            "character_name": "default",
+            "character_name": "app",
             "custom_character": ""
         })
     }).then((response) => {
