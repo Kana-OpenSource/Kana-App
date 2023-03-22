@@ -14,8 +14,26 @@ const sounds = [
     () => document.querySelector("#sound").checked && new Audio("./sounds/2.mp3").play(),
 ];
 const alarms = [
-    () => document.querySelector("#sound").checked && new Audio("./alarms/beep.mp3").play(),
-    () => document.querySelector("#sound").checked && new Audio("./alarms/iron.mp3").play()
+    {
+        "name": "Beep",
+        "sound": () => {
+            if (!document.querySelector("#sound").checked) return false;
+            const sound = new Audio("./alarms/beep.mp3");
+            sound.loop = true;
+            sound.play();
+            return sound;
+        }
+    },
+    {
+        "name": "Iron",
+        "sound": () => {
+            if (!document.querySelector("#sound").checked) return false;
+            const sound = new Audio("./alarms/iron.mp3");
+            sound.loop = true;
+            sound.play();
+            return sound;
+        }
+    }
 ];
 
 function saveChatLog() {
@@ -39,8 +57,8 @@ function speech(text) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "text": text,
-            "voice_id": document.querySelector("#voice_list").value,
+            "text": decodeURIComponent(text),
+            "voice_id": document.querySelector("#voice_select").value,
             "speed": 1.2,
             "tone": 0,
             "intonation": 1,
@@ -61,6 +79,20 @@ function speech(text) {
     });
 }
 
+function putMessage(message = "このメッセージは表示されません", isUser = false, isKana = false) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message");
+    if (isUser) {
+        messageElement.classList.add("user");
+    } else if (isKana) {
+        messageElement.classList.add("kana");
+    }
+    messageElement.innerHTML = sanitaize.encode(decodeURIComponent(message));
+    document.querySelector("#chat").appendChild(messageElement);
+    document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
+    saveChatLog();
+}
+
 function sendMessage() {
     fetch("https://kana.renorari.net/api/v2/chat", {
         "method": "POST",
@@ -78,15 +110,25 @@ function sendMessage() {
         })
     }).then((response) => {
         if (response.status == 200) {
-            response.json().then((message) => {
-                const messageElement = document.createElement("div");
-                messageElement.classList.add("message");
-                messageElement.classList.add("kana");
-                messageElement.innerHTML = sanitaize.encode(message.reply);
-                document.querySelector("#chat").appendChild(messageElement);
-                document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
-                saveChatLog();
-                speech(message.reply);
+            response.json().then((reply) => {
+                if (Object.prototype.hasOwnProperty.call(reply.extension, "error")) {
+                    putMessage("エラーが発生しました。", false, true);
+                    speech("エラーが発生しました。");
+                    putMessage(reply.extension.error, false, true);
+                } else if (Object.prototype.hasOwnProperty.call(reply.extension, "timer")) {
+                    putMessage(reply.extension.timer.start_message, false, true);
+                    speech(reply.extension.timer.start_message);
+                    setTimeout(async () => {
+                        const endMessage = reply.extension.timer.end_message + (document.querySelector("#sound").checked ? "\nアラーム音を停止するには、メッセージをクリックしてください。" : "");
+                        putMessage(endMessage, false, true);
+                        const sound = alarms[Number(document.querySelector("#alarm_select").value)].sound();
+                        speech(endMessage);
+                        sound && document.querySelector("#chat").addEventListener("click", () => sound.pause(), { once: true });
+                    }, reply.extension.timer.time * 1000);
+                } else {
+                    putMessage(reply.reply, false, true);
+                    speech(reply.reply);
+                }
             }).catch((error) => {
                 console.error(error);
             });
@@ -110,7 +152,8 @@ function updateVoiceList() {
                     const optionElement = document.createElement("option");
                     optionElement.value = key;
                     optionElement.innerHTML = voices[key].name;
-                    document.querySelector("#voice_list").appendChild(optionElement);
+                    document.querySelector("#voice_select").appendChild(optionElement);
+                    localStorage.getItem("voice_select") && (document.querySelector("#voice_select").value = localStorage.getItem("voice_select"));
                 });
             }).catch((error) => {
                 console.error(error);
@@ -125,6 +168,16 @@ function updateVoiceList() {
     });
 }
 
+function updateAlarmList() {
+    alarms.forEach((alarm, index) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = index;
+        optionElement.innerHTML = alarm.name;
+        document.querySelector("#alarm_select").appendChild(optionElement);
+        localStorage.getItem("alarm_select") && (document.querySelector("#alarm_select").value = localStorage.getItem("alarm_select"));
+    });
+}
+
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = "ja-JP";
@@ -135,24 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.getItem("userinfo") && login(JSON.parse(localStorage.getItem("userinfo")).id, JSON.parse(localStorage.getItem("userinfo")).password, true);
     localStorage.getItem("sound") && (document.querySelector("#sound").checked = (localStorage.getItem("sound") == "true"));
     localStorage.getItem("voice") && (document.querySelector("#voice").checked = (localStorage.getItem("voice") == "true"));
-    localStorage.getItem("voice_list") && (document.querySelector("#voice_list").value = (localStorage.getItem("voice_list")));
     if (localStorage.getItem("chat_log")) {
         JSON.parse(localStorage.getItem("chat_log")).forEach((message) => {
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("message");
-            message.isUser && messageElement.classList.add("user");
-            message.isKana && messageElement.classList.add("kana");
-            messageElement.innerHTML = sanitaize.encode(message.text);
-            document.querySelector("#chat").appendChild(messageElement);
-            document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
+            putMessage(message.text, message.isUser, message.isKana);
         });
     } else {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message");
-        messageElement.innerHTML = "ようこそ。<br>Kanaはこのようなことができます…";
-        document.querySelector("#chat").appendChild(messageElement);
-        document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
-        saveChatLog();
+        putMessage("ようこそ。", false, false);
+        putMessage("Kanaはこのようなことができます…", false, false);
     }
 
     function resetLogin() {
@@ -226,7 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem("chat_log");
         localStorage.removeItem("sound");
         localStorage.removeItem("voice");
-        localStorage.removeItem("voice_list");
+        localStorage.removeItem("voice_select");
+        localStorage.removeItem("alarm_select");
         document.querySelector("#login").style.display = "";
         document.querySelector("#login").classList.add("fadein");
         document.querySelector("#settings").classList.add("fadeout");
@@ -244,7 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#settings_close").addEventListener("click", () => {
         localStorage.setItem("sound", document.querySelector("#sound").checked);
         localStorage.setItem("voice", document.querySelector("#voice").checked);
-        localStorage.setItem("voice_select", document.querySelector("#voice_list").value);
+        localStorage.setItem("voice_select", document.querySelector("#voice_select").value);
+        localStorage.setItem("alarm_select", document.querySelector("#alarm_select").value);
         document.querySelector("#settings").classList.add("fadeout");
         setTimeout(() => {
             document.querySelector("#settings").style.display = "none";
@@ -272,13 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (result.isFinal) {
                 recognition.stop();
                 recMessageElement.remove();
-                const messageElement = document.createElement("div");
-                messageElement.classList.add("message");
-                messageElement.classList.add("user");
-                messageElement.innerHTML = result[0].transcript;
-                document.querySelector("#chat").appendChild(messageElement);
-                document.querySelector("#chat").scrollTop = document.querySelector("#chat").scrollHeight;
-                saveChatLog();
+                putMessage(result[0].transcript, true, false);
                 sounds[1]();
                 sendMessage();
                 recognition.removeEventListener("start", onStartRecognition);
@@ -312,23 +350,17 @@ document.addEventListener("DOMContentLoaded", () => {
         textElement.addEventListener("change", () => {
             textElement.blur();
             if (textElement.value == "") return inputElement.remove();
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("message");
-            messageElement.classList.add("user");
-            messageElement.innerHTML = textElement.value;
-            document.querySelector("#chat").appendChild(messageElement);
+            putMessage(textElement.value, true, false);
             inputElement.remove();
             sendMessage();
         });
     });
 
     updateVoiceList();
+    updateAlarmList();
     if ('SpeechRecognition' in window) {
     } else {
         document.querySelector("#listen_button").disabled = true;
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message");
-        messageElement.innerHTML = "音声認識がサポートされていません";
-        document.querySelector("#chat").appendChild(messageElement);
+        putMessage("音声認識がサポートされていません", false, false);
     }
 });
